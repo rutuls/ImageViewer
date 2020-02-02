@@ -110,14 +110,11 @@ class Profile extends Component {
                         profileStats: JSON.parse(this.responseText).data.counts
 
                     });
-                    // console.log(that.state.profileDetails);
-                    // console.log(that.state.profileStats);
                 }
 
             });
 
             xhrReleased.open("GET", "https://api.instagram.com/v1/users/self/?access_token=" + this.state.accessToken);
-            // xhrReleased.setRequestHeader("Cache-Control", "no-cache");
             xhrReleased.send(dataProfile);
 
         }

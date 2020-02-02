@@ -5,9 +5,6 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import '../home/Home.css';
-import Login from '../login/Login';
-import ReactDOM from 'react-dom';
-import { Route, Redirect } from 'react-router-dom';  
 
 const styles = theme => ({
     root: {
@@ -51,10 +48,7 @@ const stylings = {
         fontSize: '20px',
     }
 }
-const mediaStyle = {
-    height: 0,
-    paddingTop: '56.25%',
-}
+
 const cardStyle = {
     width: '100%',
     height: '100%',

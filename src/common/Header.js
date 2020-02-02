@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Header.css';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import InputAdornment from '@material-ui/core/InputAdornment';

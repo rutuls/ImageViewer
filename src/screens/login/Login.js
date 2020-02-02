@@ -50,16 +50,20 @@ class Login extends Component {
         let pwd="abcd";
         this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone"});
         this.state.password === "" ? this.setState( {passwordRequired: "dispBlock"}) : this.setState({ passwordRequired: "dispNone" });
+        let authErr = this.state.authError;
         if (this.state.username !== "" && this.state.password !== "") {
             if(this.state.username === uname && this.state.password === pwd) {
-                this.state.authError = "dispNone";
+                authErr = "dispNone";
+                this.setState({authError: authErr});
                 window.sessionStorage.setItem('access-token', '8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784');
                 this.props.history.push('/home');
             } else {
-                this.state.authError = "dispBlock";
+                authErr = "dispBlock";
+                this.setState({authError: authErr});
             }
         } else {
-            this.state.authError = "dispNone";
+            authErr = "dispNone";
+            this.setState({authError: authErr});
         }
     }
 

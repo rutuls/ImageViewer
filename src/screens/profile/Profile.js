@@ -61,7 +61,7 @@ class Profile extends Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         if (sessionStorage.getItem("access-token") !== null) {
             let data = null;
             let xhr = new XMLHttpRequest();

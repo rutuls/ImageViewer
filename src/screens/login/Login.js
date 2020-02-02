@@ -11,12 +11,12 @@ import { InputLabel, Input, Button, FormHelperText } from '@material-ui/core';
 
 const styles = theme => ({
     formControl: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(),
         width: 350
     },
 
     buttonControl: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(),
         pointer: 'cursor'
     }
 })
@@ -38,32 +38,33 @@ class Login extends Component {
     }
 
     inputUsernameChangeHandler = (e) => {
-        this.setState({username: e.target.value});
+        this.setState({ username: e.target.value });
     }
 
     inputPasswordChangeHandler = (e) => {
-        this.setState({password: e.target.value});
+        this.setState({ password: e.target.value });
     }
 
     loginClickHandler = () => {
         let uname = "abcd";
-        let pwd="abcd";
-        this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone"});
-        this.state.password === "" ? this.setState( {passwordRequired: "dispBlock"}) : this.setState({ passwordRequired: "dispNone" });
+        let pwd = "abcd";
+        let accessToken = '8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784';
+        this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+        this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
         let authErr = this.state.authError;
         if (this.state.username !== "" && this.state.password !== "") {
-            if(this.state.username === uname && this.state.password === pwd) {
+            if (this.state.username === uname && this.state.password === pwd) {
                 authErr = "dispNone";
-                this.setState({authError: authErr});
-                window.sessionStorage.setItem('access-token', '8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784');
+                this.setState({ authError: authErr });
+                window.sessionStorage.setItem('access-token', accessToken);
                 this.props.history.push('/home');
             } else {
                 authErr = "dispBlock";
-                this.setState({authError: authErr});
+                this.setState({ authError: authErr });
             }
         } else {
             authErr = "dispNone";
-            this.setState({authError: authErr});
+            this.setState({ authError: authErr });
         }
     }
 
@@ -79,7 +80,7 @@ class Login extends Component {
                                 LOGIN
                             </Typography>
                         </FormControl>
-                        <br/>
+                        <br />
                         <FormControl className={classes.formControl} required>
                             <InputLabel htmlFor="username">Username</InputLabel>
                             <Input id="username" type="text" onChange={this.inputUsernameChangeHandler}></Input>
@@ -87,7 +88,7 @@ class Login extends Component {
                                 <span className="red">required</span>
                             </FormHelperText>
                         </FormControl>
-                        <br/>
+                        <br />
                         <FormControl className={classes.formControl} required>
                             <InputLabel htmlFor="password">Password</InputLabel>
                             <Input id="password" type="password" onChange={this.inputPasswordChangeHandler}></Input>
@@ -98,7 +99,7 @@ class Login extends Component {
                                 <span className="red">Incorrect username and/or password</span>
                             </FormHelperText>
                         </FormControl>
-                        <br/><br/>
+                        <br /><br />
                         <FormControl className={classes.buttonControl} required>
                             <Button variant="contained" color="primary" onClick={this.loginClickHandler}>Login</Button>
                         </FormControl>

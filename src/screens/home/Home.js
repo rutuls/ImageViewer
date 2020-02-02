@@ -27,7 +27,7 @@ const styles = theme => ({
         width: '1500px'
     },
     formControl: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(),
         minWidth: 240,
         maxWidth: 240
     },
@@ -58,7 +58,7 @@ const cardStyle = {
 class Home extends Component {
     constructor() {
         super();
-       
+
         this.state = {
             postDetails: [],
             postDetailsCopy: [],
@@ -68,7 +68,7 @@ class Home extends Component {
         }
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         let data = null;
         let xhr = new XMLHttpRequest();
         let that = this;
@@ -146,14 +146,14 @@ class Home extends Component {
 
     render() {
         const { classes } = this.props;
-        if(sessionStorage.getItem("access-token")=== null) {
-            this.props.history.push("/");    
+        if (sessionStorage.getItem("access-token") === null) {
+            this.props.history.push("/");
         }
 
         return (
             <div>
                 <Header history={this.props.history} onSearchTextChanged={this.onSearchTextChangedHandler} profileUrl={this.state.profileDetails.profile_picture} parentPage="home"></Header>
-                
+
                 <GridList cols={2} cellHeight={900} className={classes.gridListMain}>
                     {this.state.postDetails.map((p, index) => (
                         <GridListTile key={"title" + p.id} style={{ width: '650px', margin: '10px' }}>
@@ -164,11 +164,12 @@ class Home extends Component {
                                         </Avatar>
                                     }
                                     title={p.user.username}
-                                    subheader={p.created_time}
+                                    subheader={(new Date(parseInt(p.created_time))).toLocaleString()}
                                 >
                                 </CardHeader>
                                 <CardContent>
                                     <img src={p.images.standard_resolution.url} alt={p.caption.text} className="postImage" />
+                                    <br /><br />
                                     <Divider />
                                     <Typography variant="h5" style={stylings.headingStyle} >
                                         {p.caption.text}
@@ -180,14 +181,14 @@ class Home extends Component {
                                             </span>
                                         ))}
                                     </div>
-                                    <div>
+                                    <div style={{ display: "flex" }}>
                                         {this.state.postDetailsCopy[index].likes.count === p.likes.count ?
                                             <FavoriteBorderIcon onClick={() => this.likeIncrease(index)} />
                                             :
                                             <FavoriteIcon style={{ color: red[500] }} onClick={() => this.likeDecrease(index)}></FavoriteIcon>
                                         }
+                                        <span style={{ marginLeft: "5px" }}>{p.likes.count} Likes</span>
                                     </div>
-                                    <span>{p.likes.count} Likes</span>
                                     {this.state.comments[index].length !== 0 &&
                                         this.state.comments[index].map((ele, i) => (
                                             <div className="postedComments" key={index + "postedComment" + i}>

@@ -3,10 +3,18 @@ import Header from '../../common/Header';
 class Home extends Component {
     constructor() {
         super();
+        this.state = {
+            postDetails: [],
+            postDetailsSnapshot: [],
+            commentTextField: [],
+            comments: [],
+            profileDetails: {},
+            accessToken: sessionStorage.getItem('access-token')
+        }
     }
     render() {
         return(
-            <Header></Header>
+            <Header onSearchTextChanged={this.onSearchTextChangedHandler}></Header>
         );
     }
 }

@@ -26,6 +26,7 @@ const styles = theme => ({
 class Login extends Component {
     constructor() {
         super();
+        sessionStorage.removeItem("access-token");
         this.state = {
             username: "",
             usernameRequired: "dispNone",

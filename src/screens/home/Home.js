@@ -4,7 +4,7 @@ import { CardContent, Avatar, GridList, Card, GridListTile, withStyles, InputLab
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
+import '../home/Home.css';
 
 const styles = theme => ({
     root: {
@@ -24,7 +24,6 @@ const styles = theme => ({
     },
     gridListMain: {
         transform: 'translateZ(0)',
-        cursor: 'pointer',
         width: '1500px'
     },
     formControl: {
@@ -44,16 +43,16 @@ const stylings ={
         fontSize: '15px',
         color: 'blue'
     },
+    
     headingStyle:{
         fontSize: '20px',
     }
 }
 const mediaStyle = {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '56.25%',
 }
 const cardStyle = {
-    // margin: 'auto',
     width: '100%',
     height: '100%',
     padding: 50,
@@ -65,6 +64,8 @@ class Home extends Component {
         this.state = {
             postDetails: [],
             postDetailsCopy: [],
+            commentes: [],
+            commentTextField: []
         }
     }
 
@@ -74,6 +75,14 @@ class Home extends Component {
         let that = this;
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
+                const commentInit= [];
+                const commentTextFieldInit = [];
+                JSON.parse(this.responseText).data.forEach(element => {
+                    commentInit.push([]);
+                    commentTextFieldInit.push("");
+                });
+                that.setState({comments: commentInit});
+                that.setState({commentTextField: commentTextFieldInit});
                 that.setState({
                     postDetails: JSON.parse(this.responseText).data,
                     postDetailsCopy: JSON.parse(this.responseText).data
@@ -95,6 +104,23 @@ class Home extends Component {
         let postDetails = this.state.postDetails;
         postDetails[index].likes.count--;
         this.setState({postDetails: postDetails});
+    }
+
+    onCommentChangeHandler = (e, index) => {
+        const commentSnapshot = this.state.commentTextField;
+        commentSnapshot[index]=e.target.value;
+        this.setState({commentTextField: commentSnapshot});
+    }
+
+    onAddButtonClicked = (index) => {
+        let commentTemp = this.state.comments;
+        commentTemp[index].push(
+            {
+                'author' : this.state.postDetails[index].user.username,
+                'comment' : this.state.commentTextField[index]
+            }
+        )
+        this.setState({comments: commentTemp});
     }
 
     render() {
@@ -136,12 +162,20 @@ class Home extends Component {
                                     }
                                 </div>
                                 <span>{p.likes.count} Likes</span>
-                                <div>
-                                        <FormControl required style={{ width: "100%" }}>
-                                            <InputLabel htmlFor="username">Username</InputLabel>
-                                            <Input type="text" />
+                                {this.state.comments[index].length!==0 &&
+                                    this.state.comments[index].map((ele,i)=>(
+                                    <div className="postedComments" key={index+"postedComment"+i}>
+                                        <span className="commentAuthor">{ele.author}:</span>
+                                        <span className="actualComment">{ele.comment}</span>
+                                    </div>
+                                    ))}
+                                    <br/>
+                                <div className="comment-section">
+                                        <FormControl required style={{ width: "90%", marginRight: "10px", height:"40px" }}>
+                                            <InputLabel htmlFor="username">Add a comment</InputLabel>
+                                            <Input type="text" onChange={(e)=>this.onCommentChangeHandler(e, index)}/>
                                         </FormControl>
-                                        <Button className="login-button" variant="contained" color="primary">Add</Button>
+                                        <Button className="login-button" variant="contained" color="primary" style={{height: "50px", cursor: 'pointer'}} onClick={()=>this.onAddButtonClicked(index)}>ADD</Button>
                                     </div>
                                     </CardContent>
                             </Card>

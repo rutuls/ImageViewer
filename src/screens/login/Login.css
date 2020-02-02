@@ -1,0 +1,17 @@
+.title {
+    font-weight: bolder;
+}
+
+.loginCard {
+    width: 400px;
+    display: flex;
+    margin: 0px 550px;
+}
+
+.dispNone {
+    display: none;
+}
+
+.red {
+    color: red;
+}

@@ -1,0 +1,11 @@
+.app-header {
+    background-color: #263238;
+    height: 50px;
+}
+
+.app-logo {
+    color:#fff;
+    float: left;
+    padding: 12px;
+    font-size: 18px;
+}

@@ -44,13 +44,14 @@ const Header = function (props) {
                     {sessionStorage.getItem("access-token") !== null &&
                         <div className="app-right">
                             {props.parentPage==="home" &&
-                            <FilledInput id="outlined-basic" placeholder="Search..." variant="outlined" onChange={(e) => props.onSearchTextChanged(e)}
+                            <FilledInput style={{backgroundColor: "#c0c0c0", borderRadius:"4px", width:"300px", height:"35px",paddingBottom:"7px",margin:"5px"}} placeholder="Search..." variant="outlined" onChange={(e) => props.onSearchTextChanged(e)}
                                 startAdornment={(
                                     <InputAdornment variant="standard" position="start" id="searchBoxIcon" style={{ backgroundColor: "#c0c0c0" }}>
                                         <SearchOutlinedIcon />
 
                                     </InputAdornment>
                                 )}
+                                disableUnderline={true}
 
                             />}
                             <Avatar aria-label="recipe" src={props.profileUrl} style={{ float: "right", marginLeft: "10px", cursor: "pointer" }} onClick={handleClick}  ></Avatar>

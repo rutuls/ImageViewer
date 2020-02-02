@@ -221,7 +221,7 @@ class Profile extends Component {
                                     onRequestClose={this.closeModalHandler}
                                     style={stylings.updateModal}
                                 >
-                                    <Typography variant="headline" component="h6" >
+                                    <Typography variant="h4" >
                                         Edit
                                      </Typography>
                                     <br />

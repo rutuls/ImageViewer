@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Header from '../../common/Header';
-import { CardContent, Avatar, GridList, Card, GridListTile, withStyles, InputLabel, FormControl, Input, Button } from '@material-ui/core';
+import { CardContent, Avatar, GridList, Card, GridListTile, withStyles, InputLabel, FormControl, Typography, Input, Button, CardHeader, Divider } from '@material-ui/core';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { red } from '@material-ui/core/colors';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+
 
 const styles = theme => ({
     root: {
@@ -21,7 +24,8 @@ const styles = theme => ({
     },
     gridListMain: {
         transform: 'translateZ(0)',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        width: '1500px'
     },
     formControl: {
         margin: theme.spacing.unit,
@@ -32,6 +36,22 @@ const styles = theme => ({
         color: theme.palette.primary.light,
     }
 });
+
+const stylings ={
+    tagStyle: {
+        display: 'inline',
+        paddingRight: '2px',
+        fontSize: '15px',
+        color: 'blue'
+    },
+    headingStyle:{
+        fontSize: '20px',
+    }
+}
+const mediaStyle = {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
+}
 const cardStyle = {
     // margin: 'auto',
     width: '100%',
@@ -44,6 +64,7 @@ class Home extends Component {
         super();
         this.state = {
             postDetails: [],
+            postDetailsCopy: [],
         }
     }
 
@@ -54,13 +75,26 @@ class Home extends Component {
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 that.setState({
-                    postDetails: JSON.parse(this.responseText).data
+                    postDetails: JSON.parse(this.responseText).data,
+                    postDetailsCopy: JSON.parse(this.responseText).data
                 });
-                console.log(that.state.postDetails);
+                console.log(that.state.postDetailsCopy);
             }
         });
         xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
         xhr.send(data);
+    }
+
+    likeIncrease = (index) => {
+        let postDetails = this.state.postDetails;
+        postDetails[index].likes.count++;
+        this.setState({postDetails: postDetails});
+    }
+
+    likeDecrease = (index) => {
+        let postDetails = this.state.postDetails;
+        postDetails[index].likes.count--;
+        this.setState({postDetails: postDetails});
     }
 
     render() {
@@ -68,30 +102,40 @@ class Home extends Component {
         return (
             <div>
                 <Header onSearchTextChanged={this.onSearchTextChangedHandler}></Header>
-                <GridList cols={2} cellHeight={750} cols={2} className={classes.gridListMain}>
-                    {this.state.postDetails.map(p => (
-                        <GridListTile key={"title" + p.id} style={{ border: "1px solid black" }}>
+                <GridList cols={2} cellHeight={900} className={classes.gridListMain}>
+                    {this.state.postDetails.map((p, index) => (
+                        <GridListTile key={"title" + p.id} style={{ width:'650px', margin: '10px' }}>
                             <Card style={{ cardStyle }} variant="outlined">
+                            <CardHeader
+                                avatar={
+                                    <Avatar aria-label="recipe" src={p.user.profile_picture}>
+                                    </Avatar>
+                                }
+                                title={p.user.username}
+                                subheader={p.created_time}
+                            >
+                            </CardHeader>
                                 <CardContent>
-                                    <Avatar src={p.user.profile_picture}></Avatar>
-                                    <span>
-                                        {p.user.username}
-                                        {p.created_time}
-                                    </span>
-
-                                    <img src={p.images.standard_resolution.url}></img>
-                                </CardContent>
-                                <div>
+                                <img src={p.images.standard_resolution.url} alt={p.caption.text} className="postImage" />
+                                <Divider/>
+                                <Typography variant="h5" style={stylings.headingStyle} >
                                     {p.caption.text}
-                                </div>
+                                </Typography>
                                 <div>
                                     {p.tags.map(tag => (
-                                        <span key={"tags" + tag}>#{tag}</span>
+                                        <span key={"tags" + tag}>
+                                        <Typography display="inline" variant="caption" style={stylings.tagStyle} >#{tag}</Typography>
+                                        </span>
                                     ))}
                                 </div>
                                 <div>
-                                    <span> <FavoriteBorderIcon />{p.likes.count} Likes</span>
+                                    {this.state.postDetailsCopy[index].likes.count === p.likes.count ? 
+                                    <FavoriteBorderIcon onClick={() => this.likeIncrease(index)}/>
+                                    :
+                                    <FavoriteIcon style={{color: red[500]}} onClick={() => this.likeDecrease(index)}></FavoriteIcon>
+                                    }
                                 </div>
+                                <span>{p.likes.count} Likes</span>
                                 <div>
                                         <FormControl required style={{ width: "100%" }}>
                                             <InputLabel htmlFor="username">Username</InputLabel>
@@ -99,6 +143,7 @@ class Home extends Component {
                                         </FormControl>
                                         <Button className="login-button" variant="contained" color="primary">Add</Button>
                                     </div>
+                                    </CardContent>
                             </Card>
                         </GridListTile>
                     ))}

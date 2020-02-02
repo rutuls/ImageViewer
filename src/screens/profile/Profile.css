@@ -1,0 +1,62 @@
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.red {
+    color: red;
+}
+.postImage{
+  cursor: pointer;
+  height: 100%;
+  width: 100%
+}
+.profile_info{
+    display: flex;
+    flex-direction: row;
+}
+#avatar{
+    width: 20%;
+}
+#header-details{
+    width: 80%;
+}
+.profile_info{
+    margin-left: 15%;
+    margin-right: 15%;
+}
+#statInfo{
+    font-size: 12px;
+}
+#editSection{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+#edit_button{
+    margin-left: 20px;
+}
+.postModalContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+    height:100%;
+    width: 80%;
+}
+#postImg{
+    width:60%;
+    height:100%;
+}
+.postModalImage{
+    object-fit: fill;
+    width: 100%;
+    height: 100%
+    
+}
+#titleBar{
+    display: flex;
+    flex-direction: row;
+}

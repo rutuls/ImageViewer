@@ -33,9 +33,9 @@ const Header = function (props) {
             <header>
                 <div className="app-header">
                     <span className="app-logo">Image Viewer</span>
-                    {true === true &&
+                    {sessionStorage.getItem("access-token") !== null &&
                         <div className="app-right">
-                            <FilledInput id="outlined-basic" placeholder="Search..." variant="outlined" onChange={(e) => this.props.onSearchTextChanged(e)}
+                            <FilledInput id="outlined-basic" placeholder="Search..." variant="outlined" onChange={(e) => props.onSearchTextChanged(e)}
                                 startAdornment={(
                                     <InputAdornment variant="standard" position="start" id="searchBoxIcon" style={{ backgroundColor: "#c0c0c0" }}>
                                         <SearchOutlinedIcon />
@@ -63,5 +63,4 @@ const Header = function (props) {
         </div>
     )
 }
-
 export default Header;

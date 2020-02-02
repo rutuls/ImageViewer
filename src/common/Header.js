@@ -27,7 +27,7 @@ class Header extends Component {
                         <span className="app-logo">Image Viewer</span>
                         {this.state.loggedIn === true &&
                         <div className="app-right">
-                            <FilledInput id="outlined-basic" placeholder="Search..." variant="outlined"
+                            <FilledInput id="outlined-basic" placeholder="Search..." variant="outlined" onChange={(e)=>this.props.onSearchTextChanged(e)}
                                 startAdornment={(
                                     <InputAdornment variant="standard" position="start" id="searchBoxIcon" style={{backgroundColor:"#c0c0c0"}}>
                                         <SearchOutlinedIcon />

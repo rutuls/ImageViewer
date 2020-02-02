@@ -65,7 +65,8 @@ class Home extends Component {
             postDetails: [],
             postDetailsCopy: [],
             commentes: [],
-            commentTextField: []
+            commentTextField: [],
+            profileDetails: {},
         }
     }
 
@@ -92,6 +93,20 @@ class Home extends Component {
         });
         xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
         xhr.send(data);
+
+        let dataProfile = null;
+        let xhrProfile = new XMLHttpRequest();
+        xhrProfile.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                that.setState({
+                    profileDetails: JSON.parse(this.responseText).data
+                });
+            }
+
+        });
+
+        xhrProfile.open("GET", "https://api.instagram.com/v1/users/self/?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
+        xhrProfile.send(dataProfile);
     }
 
     likeIncrease = (index) => {
@@ -128,14 +143,15 @@ class Home extends Component {
         let filteredResult = this.state.postDetailsCopy.filter((post) => {
             return post.caption.text.toUpperCase().indexOf(e.target.value.toUpperCase()) != -1;
         });
-        this.setState({postDetails: filteredResult});
+        this.setState({ postDetails: filteredResult });
     }
 
     render() {
         const { classes } = this.props;
+
         return (
             <div>
-                <Header onSearchTextChanged={this.onSearchTextChangedHandler}></Header>
+                <Header onSearchTextChanged={this.onSearchTextChangedHandler} profileUrl={this.state.profileDetails.profile_picture}></Header>
                 <GridList cols={2} cellHeight={900} className={classes.gridListMain}>
                     {this.state.postDetails.map((p, index) => (
                         <GridListTile key={"title" + p.id} style={{ width: '650px', margin: '10px' }}>

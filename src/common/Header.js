@@ -28,13 +28,22 @@ const Header = function (props) {
         props.history.push('/profile');
     }
 
+    const onClickLogoHandler = () => {
+        if(sessionStorage.getItem("access-token") !== null) {
+            props.history.push('/home');
+        } else {
+            props.history.push('/');
+        }
+    }
+
     return (
         <div>
             <header>
                 <div className="app-header">
-                    <span className="app-logo">Image Viewer</span>
+                    <span className="app-logo" style={{cursor: "pointer"}} onClick={() => {onClickLogoHandler();}}>Image Viewer</span>
                     {sessionStorage.getItem("access-token") !== null &&
                         <div className="app-right">
+                            {props.parentPage==="home" &&
                             <FilledInput id="outlined-basic" placeholder="Search..." variant="outlined" onChange={(e) => props.onSearchTextChanged(e)}
                                 startAdornment={(
                                     <InputAdornment variant="standard" position="start" id="searchBoxIcon" style={{ backgroundColor: "#c0c0c0" }}>
@@ -43,7 +52,7 @@ const Header = function (props) {
                                     </InputAdornment>
                                 )}
 
-                            />
+                            />}
                             <Avatar aria-label="recipe" src={props.profileUrl} style={{ float: "right", marginLeft: "10px", cursor: "pointer" }} onClick={handleClick}  ></Avatar>
                             <Menu
                                 id="simple-menu"

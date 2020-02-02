@@ -18,7 +18,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Modal from 'react-modal';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-const stylings ={
+const stylings = {
     tagStyle: {
         display: 'inline',
         paddingRight: '2px',
@@ -26,7 +26,7 @@ const stylings ={
         fontSize: '15px',
         color: '#00FFFF'
     },
-    headingStyle:{
+    headingStyle: {
         fontSize: '20px',
     },
     updateModal: {
@@ -62,63 +62,65 @@ class Profile extends Component {
     }
 
     componentWillMount() {
-        let data = null;
-        let xhr = new XMLHttpRequest();
-        let that = this;
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                const commentInit = [];
-                const commentTextFieldInit = [];
-                JSON.parse(this.responseText).data.forEach(element => {
-                    commentInit.push([]);
-                    commentTextFieldInit.push("");
-                });
-                that.setState({ comments: commentInit });
-                that.setState({ commentTextField: commentTextFieldInit });
-                that.setState({
-                    postDetailsSnapshot: JSON.parse(this.responseText).data
-                });
-                that.setState({
-                    postDetails: JSON.parse(this.responseText).data
-                });
-                that.setState({
-                    isDataFetched: true
-                });
+        if (sessionStorage.getItem("access-token") !== null) {
+            let data = null;
+            let xhr = new XMLHttpRequest();
+            let that = this;
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    const commentInit = [];
+                    const commentTextFieldInit = [];
+                    JSON.parse(this.responseText).data.forEach(element => {
+                        commentInit.push([]);
+                        commentTextFieldInit.push("");
+                    });
+                    that.setState({ comments: commentInit });
+                    that.setState({ commentTextField: commentTextFieldInit });
+                    that.setState({
+                        postDetailsSnapshot: JSON.parse(this.responseText).data
+                    });
+                    that.setState({
+                        postDetails: JSON.parse(this.responseText).data
+                    });
+                    that.setState({
+                        isDataFetched: true
+                    });
 
 
-                // console.log(that.state.postDetails);
-            }
-        });
+                    // console.log(that.state.postDetails);
+                }
+            });
 
-        xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent?access_token="+this.state.accessToken);
-        // xhr.setRequestHeader("Cache-Control", "no-cache");
-        //    xhr.setRequestHeader("cor");
-        xhr.send(data);
-
-
+            xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent?access_token=" + this.state.accessToken);
+            // xhr.setRequestHeader("Cache-Control", "no-cache");
+            //    xhr.setRequestHeader("cor");
+            xhr.send(data);
 
 
-        let dataProfile = null;
-        let xhrReleased = new XMLHttpRequest();
-        xhrReleased.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                that.setState({
-                    profileDetails: JSON.parse(this.responseText).data
-                });
-                that.setState({
-                    profileStats: JSON.parse(this.responseText).data.counts
 
-                });
-                // console.log(that.state.profileDetails);
-                // console.log(that.state.profileStats);
-            }
 
-        });
+            let dataProfile = null;
+            let xhrReleased = new XMLHttpRequest();
+            xhrReleased.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    that.setState({
+                        profileDetails: JSON.parse(this.responseText).data
+                    });
+                    that.setState({
+                        profileStats: JSON.parse(this.responseText).data.counts
 
-        xhrReleased.open("GET", "https://api.instagram.com/v1/users/self/?access_token="+this.state.accessToken);
-        // xhrReleased.setRequestHeader("Cache-Control", "no-cache");
-        xhrReleased.send(dataProfile);
+                    });
+                    // console.log(that.state.profileDetails);
+                    // console.log(that.state.profileStats);
+                }
 
+            });
+
+            xhrReleased.open("GET", "https://api.instagram.com/v1/users/self/?access_token=" + this.state.accessToken);
+            // xhrReleased.setRequestHeader("Cache-Control", "no-cache");
+            xhrReleased.send(dataProfile);
+
+        }
     }
     closeModalHandler = () => {
         this.setState({ modalIsOpen: false });
@@ -144,13 +146,13 @@ class Profile extends Component {
         this.setState({ profileDetails: profDetails });
         this.setState({ modalIsOpen: false });
     }
-    likeIconClicked = (index) =>{
-        let postDetails=this.state.postDetails;
-        if(postDetails[index].likes.count===this.state.postDetailsSnapshot[index].likes.count)
-             postDetails[index].likes.count++;
-        else 
-             postDetails[index].likes.count--;
-        this.setState({postDetails: postDetails});
+    likeIconClicked = (index) => {
+        let postDetails = this.state.postDetails;
+        if (postDetails[index].likes.count === this.state.postDetailsSnapshot[index].likes.count)
+            postDetails[index].likes.count++;
+        else
+            postDetails[index].likes.count--;
+        this.setState({ postDetails: postDetails });
     }
 
 
@@ -159,24 +161,27 @@ class Profile extends Component {
         this.openPostModelHandler();
     }
 
-    onCommentValueChanged = (e,index) => {
+    onCommentValueChanged = (e, index) => {
         const commentSnapshot = this.state.commentTextField;
-        commentSnapshot[index]=e.target.value;
-        this.setState({commentTextField: commentSnapshot});
-        
+        commentSnapshot[index] = e.target.value;
+        this.setState({ commentTextField: commentSnapshot });
+
         console.log(this.state.commentTextField);
     }
-    onAddCommentClicked =(index) => {
-        let comentInfoState= this.state.comments;
+    onAddCommentClicked = (index) => {
+        let comentInfoState = this.state.comments;
         console.log(index);
         comentInfoState[index].push({
             'author': this.state.postDetails[index].user.username,
             'comment': this.state.commentTextField[index]
         });
-        this.setState({comments: comentInfoState});
+        this.setState({ comments: comentInfoState });
         console.log(this.state.comments);
     }
     render() {
+        if (sessionStorage.getItem("access-token") === null) {
+            this.props.history.push("/");
+        }
         return (
             <div>
                 <Header history={this.props.history} profileUrl={this.state.profileDetails.profile_picture} parentPage="profile" />
@@ -186,7 +191,7 @@ class Profile extends Component {
                         <Avatar size="medium" aria-label="recipe" src={this.state.profileDetails.profile_picture}>
                         </Avatar>
                     </div>
-                   
+
                     <div id="header-details">
                         <div>
                             <Typography variant="subtitle1"  >
@@ -202,7 +207,7 @@ class Profile extends Component {
                             <span className="stat">Followed By: {this.state.profileStats.followed_by}</span>
                             </div>
                         </Typography>
-                        <br/>
+                        <br />
                         <div id="editSection">
                             <div>
                                 {this.state.profileDetails.full_name}
@@ -222,7 +227,7 @@ class Profile extends Component {
                                     <Typography variant="headline" component="h6" >
                                         Edit
                                      </Typography>
-                                     <br/>
+                                    <br />
                                     <FormControl required>
                                         <InputLabel htmlFor="fullname">Full Name</InputLabel>
                                         <Input id="fullname" type="text" fullname={this.state.fullNameField} onChange={this.inputNameChangeHandler} />
@@ -230,7 +235,7 @@ class Profile extends Component {
                                             <span className="red">required</span>
                                         </FormHelperText>
                                     </FormControl>
-                                    <br/><br/><br/>
+                                    <br /><br /><br />
                                     <Button className="login-button" variant="contained" color="primary" onClick={this.onUpdateButtonClickHandler}>Update</Button>
                                 </Modal>
                             </div>
@@ -252,7 +257,7 @@ class Profile extends Component {
                         <Modal
                             ariaHideApp={false}
                             isOpen={this.state.isPostModalOpen}
-                            
+
                             contentLabel="Login"
                             onRequestClose={this.closePostModalHandler}
 
@@ -274,7 +279,7 @@ class Profile extends Component {
                                         </div>
                                     </div>
                                     <Divider />
-                                    <br/>
+                                    <br />
                                     <Typography variant="h5" style={stylings.headingStyle} >
                                         {this.state.postDetails[this.state.activeImageIndex].caption.text}
                                     </Typography>

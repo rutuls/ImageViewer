@@ -5,6 +5,9 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import '../home/Home.css';
+import Login from '../login/Login';
+import ReactDOM from 'react-dom';
+import { Route, Redirect } from 'react-router-dom';  
 
 const styles = theme => ({
     root: {
@@ -61,6 +64,7 @@ const cardStyle = {
 class Home extends Component {
     constructor() {
         super();
+       
         this.state = {
             postDetails: [],
             postDetailsCopy: [],
@@ -148,10 +152,14 @@ class Home extends Component {
 
     render() {
         const { classes } = this.props;
+        if(sessionStorage.getItem("access-token")=== null) {
+            this.props.history.push("/");    
+        }
 
         return (
             <div>
                 <Header history={this.props.history} onSearchTextChanged={this.onSearchTextChangedHandler} profileUrl={this.state.profileDetails.profile_picture} parentPage="home"></Header>
+                
                 <GridList cols={2} cellHeight={900} className={classes.gridListMain}>
                     {this.state.postDetails.map((p, index) => (
                         <GridListTile key={"title" + p.id} style={{ width: '650px', margin: '10px' }}>

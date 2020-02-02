@@ -19,6 +19,15 @@ const Header = function (props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const onClickLogOutHandler = () => {
+        sessionStorage.removeItem('access-token');
+        props.history.push('/');
+    }
+    const onClickMyAccountHandler = () => {
+        props.history.push('/profile');
+    }
+
     return (
         <div>
             <header>
@@ -43,8 +52,10 @@ const Header = function (props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>My Account</MenuItem>
-                                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                {props.parentPage === "home" &&
+                                    <MenuItem onClick={() => { handleClose(); onClickMyAccountHandler(); }}>My Account</MenuItem>
+                                }
+                                <MenuItem onClick={() => { handleClose(); onClickLogOutHandler(); }} >Logout</MenuItem>
                             </Menu>
                         </div>}
                 </div>

@@ -141,7 +141,7 @@ class Home extends Component {
     onSearchTextChangedHandler = (e) => {
         console.log(e.target.value);
         let filteredResult = this.state.postDetailsCopy.filter((post) => {
-            return post.caption.text.toUpperCase().indexOf(e.target.value.toUpperCase()) != -1;
+            return post.caption.text.toUpperCase().indexOf(e.target.value.toUpperCase()) !== -1;
         });
         this.setState({ postDetails: filteredResult });
     }
@@ -151,7 +151,7 @@ class Home extends Component {
 
         return (
             <div>
-                <Header onSearchTextChanged={this.onSearchTextChangedHandler} profileUrl={this.state.profileDetails.profile_picture}></Header>
+                <Header onSearchTextChanged={this.onSearchTextChangedHandler} profileUrl={this.state.profileDetails.profile_picture} parentPage="home"></Header>
                 <GridList cols={2} cellHeight={900} className={classes.gridListMain}>
                     {this.state.postDetails.map((p, index) => (
                         <GridListTile key={"title" + p.id} style={{ width: '650px', margin: '10px' }}>

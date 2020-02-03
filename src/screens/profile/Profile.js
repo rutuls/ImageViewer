@@ -60,7 +60,7 @@ class Profile extends Component {
             accessToken: sessionStorage.getItem('access-token')
         }
     }
-
+    // Calling APIs to get response of Profile details and Posts details
     UNSAFE_componentWillMount() {
         if (sessionStorage.getItem("access-token") !== null) {
             let data = null;
@@ -74,41 +74,27 @@ class Profile extends Component {
                         commentInit.push([]);
                         commentTextFieldInit.push("");
                     });
-                    that.setState({ comments: commentInit });
-                    that.setState({ commentTextField: commentTextFieldInit });
-                    that.setState({
-                        postDetailsSnapshot: JSON.parse(this.responseText).data
-                    });
-                    that.setState({
-                        postDetails: JSON.parse(this.responseText).data
-                    });
-                    that.setState({
-                        isDataFetched: true
-                    });
-
-
-                    // console.log(that.state.postDetails);
+                    that.setState(
+                        {
+                            comments: commentInit,
+                            commentTextField: commentTextFieldInit,
+                            postDetailsSnapshot: JSON.parse(this.responseText).data,
+                            postDetails: JSON.parse(this.responseText).data,
+                            isDataFetched: true
+                        });
                 }
             });
 
             xhr.open("GET", "https://api.instagram.com/v1/users/self/media/recent?access_token=" + this.state.accessToken);
-            // xhr.setRequestHeader("Cache-Control", "no-cache");
-            //    xhr.setRequestHeader("cor");
             xhr.send(data);
-
-
-
 
             let dataProfile = null;
             let xhrReleased = new XMLHttpRequest();
             xhrReleased.addEventListener("readystatechange", function () {
                 if (this.readyState === 4) {
                     that.setState({
-                        profileDetails: JSON.parse(this.responseText).data
-                    });
-                    that.setState({
+                        profileDetails: JSON.parse(this.responseText).data,
                         profileStats: JSON.parse(this.responseText).data.counts
-
                     });
                 }
 
@@ -132,7 +118,6 @@ class Profile extends Component {
         this.setState({ isPostModalOpen: true });
     }
     inputNameChangeHandler = (e) => {
-        //const profDetails = this.state.profileDetails
         this.setState({ fullNameField: e.target.value });
     }
     onUpdateButtonClickHandler = (e) => {
@@ -151,13 +136,10 @@ class Profile extends Component {
             postDetails[index].likes.count--;
         this.setState({ postDetails: postDetails });
     }
-
-
     onPostImageClickedHandler = (index) => {
         this.setState({ activeImageIndex: index });
         this.openPostModelHandler();
     }
-
     onCommentValueChanged = (e, index) => {
         const commentSnapshot = this.state.commentTextField;
         commentSnapshot[index] = e.target.value;

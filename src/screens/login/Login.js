@@ -45,6 +45,10 @@ class Login extends Component {
         this.setState({ password: e.target.value });
     }
 
+    /*When login button clicked, loginClickHandler checks whether username and password fields are empty. 
+    If empty we show required error. If not empty then we check if username and password matches the defined one
+    If it matches then it allows user to home page or it will show inline error of incorrect username or password
+    */
     loginClickHandler = () => {
         let uname = "abcd";
         let pwd = "abcd";
@@ -69,6 +73,7 @@ class Login extends Component {
     }
 
     render() {
+        // Used FormControl,Input and Buttons for Login card. Also used FormHelperText for showing inline errors
         const { classes } = this.props;
         return (
             <div>

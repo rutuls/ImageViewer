@@ -67,7 +67,7 @@ class Home extends Component {
             profileDetails: {},
         }
     }
-
+    // Calling the provided Post and Profile APIs to get the response
     UNSAFE_componentWillMount() {
         let data = null;
         let xhr = new XMLHttpRequest();
@@ -80,9 +80,9 @@ class Home extends Component {
                     commentInit.push([]);
                     commentTextFieldInit.push("");
                 });
-                that.setState({ comments: commentInit });
-                that.setState({ commentTextField: commentTextFieldInit });
-                that.setState({
+                that.setState({ 
+                    comments: commentInit,
+                    commentTextField: commentTextFieldInit,
                     postDetails: JSON.parse(this.responseText).data,
                     postDetailsCopy: JSON.parse(this.responseText).data
                 });
@@ -106,13 +106,13 @@ class Home extends Component {
         xhrProfile.open("GET", "https://api.instagram.com/v1/users/self/?access_token=8661035776.d0fcd39.39f63ab2f88d4f9c92b0862729ee2784");
         xhrProfile.send(dataProfile);
     }
-
+    // Increases the like count
     likeIncrease = (index) => {
         let postDetails = this.state.postDetails;
         postDetails[index].likes.count++;
         this.setState({ postDetails: postDetails });
     }
-
+    // Decreases the like count
     likeDecrease = (index) => {
         let postDetails = this.state.postDetails;
         postDetails[index].likes.count--;
@@ -124,7 +124,7 @@ class Home extends Component {
         commentSnapshot[index] = e.target.value;
         this.setState({ commentTextField: commentSnapshot });
     }
-
+    //Adding comment when Add button for comment is clicked
     onAddButtonClicked = (index) => {
         let commentTemp = this.state.comments;
         commentTemp[index].push(
@@ -145,6 +145,7 @@ class Home extends Component {
     }
 
     render() {
+        // Checking access-token in storage when Home is rendered. If user tries to access Home without logging in, it will redirect to login page
         const { classes } = this.props;
         if (sessionStorage.getItem("access-token") === null) {
             this.props.history.push("/");

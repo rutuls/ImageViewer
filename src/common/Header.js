@@ -20,14 +20,16 @@ const Header = function (props) {
         setAnchorEl(null);
     };
 
+    // On clicking on Logout menu item this will delete access-token and redirect user to login page
     const onClickLogOutHandler = () => {
         sessionStorage.removeItem('access-token');
         props.history.push('/');
     }
+    // On clicking on MyAccount menu item this handler will redirect user to profile
     const onClickMyAccountHandler = () => {
         props.history.push('/profile');
     }
-
+    // On clicking on ImageViewer Logo and if access-token is not null it will redirect to home page or else it will redirect to login page
     const onClickLogoHandler = () => {
         if (sessionStorage.getItem("access-token") !== null) {
             props.history.push('/home');
@@ -35,7 +37,8 @@ const Header = function (props) {
             props.history.push('/');
         }
     }
-
+    // Added Application logo, for Search bar we have used FilledInput UI component and showing Search icon at start position. Also we show Avatar for showing profile picutre
+    // Also showing Menu items when clicking on Avatar
     return (
         <div>
             <header>

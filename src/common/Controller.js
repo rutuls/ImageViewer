@@ -5,18 +5,14 @@ import Home from '../screens/home/Home';
 import Profile from '../screens/profile/Profile';
 
 class Controller extends Component {
-
-  constructor() {
-    super();
-    this.baseUrl = "http://54.210.178.143:8080/api/v1/";
-  }
   render() {
     return (
+      // Defined all the routes using Route component
       <Router>
         <div className="main-container">
           <Route exact path='/' render={(props) => <Login {...props}  />} />
-          <Route path='/home' render={(props) => <Home {...props} baseUrl={this.baseUrl} />} />
-          <Route path='/profile' render={(props) => <Profile {...props} baseUrl={this.baseUrl}/>}/>
+          <Route path='/home' render={(props) => <Home {...props} />} />
+          <Route path='/profile' render={(props) => <Profile {...props}/>}/>
         </div>
       </Router>
     )
